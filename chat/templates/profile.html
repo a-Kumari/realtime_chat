@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #FF4081, #7C4DFF); /* Bright Pink and Purple Gradient */
+            color: white;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;  /* Adjusted to center the container with some top margin */
+            background: rgba(0, 0, 0, 0.6); /* Dark background with transparency for container */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;  /* White color for the title */
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        form label {
+            font-weight: bold;
+            color: white;
+        }
+        form input[type="file"],
+        form textarea,
+        form input[type="text"],
+        form button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        form button {
+            background-color: #FF4081; /* Bright Pink button */
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #7C4DFF; /* Bright Purple on hover */
+        }
+        .current-profile {
+            text-align: center;
+        }
+        .current-profile img {
+            margin-top: 10px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .current-profile p {
+            font-size: 16px;
+            color: #ccc;  /* Light gray for profile text */
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Profile</h2>
+
+        <div class="current-profile">
+            <h3>Current Profile</h3>
+            {% if request.user.profile.profile_picture %}
+                <img src="{{ request.user.profile.profile_picture.url }}" alt="Profile Picture">
+            {% endif %}
+            <p>{{ request.user.profile.about }}</p>
+        </div>
+    
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</body>
+</html>

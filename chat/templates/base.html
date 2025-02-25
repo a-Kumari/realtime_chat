@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChitChat - Front Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #FF4081, #7C4DFF); /* Bright Pink and Purple Gradient */
+            color: white;
+        }
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            text-align: center;
+        }
+        .navbar a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            text-align: center;
+        }
+        .main-content h1 {
+            font-size: 50px;
+        }
+        .btn {
+            background: #FF4081; /* Bright Pink button */
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 18px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #7C4DFF; /* Bright Purple on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+
+    </div>
+    <div class="main-content">
+        <div>
+            <h1>Welcome to ChitChat</h1>
+            <p>Connect with friends and the world around you.</p>
+            <a href="{% url 'connection' %}" class="btn">Get Started</a>
+        </div>
+    </div>
+</body>
+</html>

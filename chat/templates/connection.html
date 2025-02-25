@@ -1,0 +1,157 @@
+
+<form method="POST" style="display: none;" id="chatForm">
+  {% csrf_token %}
+  <input type="hidden" name="receiver" id="selectedReceiver" required>
+  <input type="hidden" name="room_name" id="selectedRoomName" required>
+</form>
+
+<!-- Three-dot menu -->
+<div class="menu-container">
+  <div class="menu-dots" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+  </div>
+  <div class="menu-options" id="menuOptions">
+      <a href="{% url 'profile' %}">Profile</a>
+      <a href="{% url 'logout' %}">Logout</a>
+  </div>
+</div>
+
+<div class="user-list">
+  {% for user in users %}
+  <div class="user-card" data-room="{{ user.room_name }}" onclick="startChat('{{ user.username }}', '{{ user.room_name }}')">
+      <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="profile-pic">
+      <div class="user-info">
+          <h3>{{ user.username }}</h3>
+          <p>{{ user.about }}</p>
+          {% if user.unread_count > 0 %}
+          <span class="unread-count">{{ user.unread_count }}</span>
+          {% endif %}
+        </div>
+  </div>
+  {% endfor %}
+</div>
+<style>
+  body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(45deg, #FF4081, #7C4DFF);
+      color: white;
+  }
+  .menu-container {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      z-index: 100;
+  }
+  .menu-dots {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+  }
+  .menu-dots span {
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+  }
+  .menu-options {
+      display: none;
+      position: absolute;
+      top: 25px;
+      right: 0;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .menu-options a {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+  }
+  .menu-options a:hover {
+      text-decoration: underline;
+  }
+  .user-list {
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  .user-card {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+  }
+  .user-card:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.02);
+  }
+  .profile-pic {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-right: 15px;
+      border: 2px solid white;
+  }
+  .user-info h3 {
+      margin: 0;
+      font-size: 18px;
+      color: white;
+  }
+  .user-info p {
+      margin: 0;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+  }
+  .unread-count {
+      background-color: red;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 50%;
+      margin-left: 10px;
+  }
+</style>
+<script>
+  // Toggle the visibility of the menu options
+  function toggleMenu() {
+      const menu = document.getElementById("menuOptions");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+  }
+
+  // Function to set the receiver and room name when a user is clicked
+  function startChat(receiver, roomName) {
+    const unreadCountElement = document.querySelector(`[data-room="${roomName}"] .unread-count`);
+    if (unreadCountElement) {
+        unreadCountElement.style.display = 'none';
+    }
+
+    document.getElementById("selectedReceiver").value = receiver;
+    document.getElementById("selectedRoomName").value = roomName;
+    document.getElementById("chatForm").submit();
+    window.location.href = `/chat/${roomName}/`;
+  }
+
+  // Close menu when clicking outside
+  document.addEventListener("click", function (event) {
+      const menu = document.getElementById("menuOptions");
+      const menuDots = document.querySelector(".menu-dots");
+      if (!menu.contains(event.target) && !menuDots.contains(event.target)) {
+          menu.style.display = "none";
+      }
+  });
+</script>
